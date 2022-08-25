@@ -1,12 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from 'src/auth/auth.guard';
+import { Request } from 'express';
+import { HelperService } from 'src/helper/helper.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private helperService: HelperService
+  ) { }
+
+  @Get('me')
+  async UserFromHeader(@Req() req: Request) {
+    const jwt = req.headers.authorization
+    const token = (jwt.replace("Bearer ", ""))
+    const user = await this.helperService.decodeToken(token)
+    return this.usersService.findOne({ id: user.userId })
+  }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {

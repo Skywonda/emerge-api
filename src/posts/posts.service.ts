@@ -18,7 +18,9 @@ export class PostsService {
   }
 
   async findAll() {
-    return await this.prisma.post.findMany();
+    let posts = await this.prisma.post.findMany({ include: { author: { select: { username: true } } } })
+    return posts
+
   }
 
   async findOne(where: Prisma.PostWhereUniqueInput) {
@@ -33,6 +35,7 @@ export class PostsService {
   }
 
   async remove(id: Prisma.PostWhereUniqueInput) {
+    console.log(id)
     return this.prisma.post.delete({ where: id });
   }
 }

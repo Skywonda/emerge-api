@@ -3,10 +3,15 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtGuard } from 'src/auth/auth.guard';
+import { Post as PostEntity } from './entities/post.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) { }
+  constructor(
+    private readonly postsService: PostsService,
+    private userService: UsersService
+  ) { }
 
   @UseGuards(JwtGuard)
   @Post()
@@ -16,14 +21,14 @@ export class PostsController {
 
   @UseGuards(JwtGuard)
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  async findAll() {
+    return this.postsService.findAll()
   }
 
   @UseGuards(JwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne({ id });
+  async findOne(@Param('id') id: string) {
+    return await this.postsService.findOne({ id })
   }
 
   @UseGuards(JwtGuard)
