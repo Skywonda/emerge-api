@@ -1,7 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { use } from 'passport';
 import { HelperService } from 'src/helper/helper.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Users } from './entities/user.entities';
 
 @Injectable()
 export class UsersService {
@@ -26,8 +28,12 @@ export class UsersService {
 
   }
 
-  async findAll() {
-    return await this.prisma.user.findMany();
+  async findAll(): Promise<Users[]> {
+    const user = await this.prisma.user.findMany();
+    user.map((each) => {
+      delete each.password
+    })
+    return user
   }
 
   async findOne(where: Prisma.UserWhereUniqueInput) {

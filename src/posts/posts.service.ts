@@ -18,7 +18,7 @@ export class PostsService {
   }
 
   async findAll() {
-    let posts = await this.prisma.post.findMany({ include: { author: { select: { username: true } } } })
+    const posts = await this.prisma.post.findMany({ include: { author: { select: { username: true } } } })
     return posts
 
   }

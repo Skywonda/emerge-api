@@ -20,6 +20,8 @@ model User {
   updated_at DateTime @updatedAt @db.Timestamptz(6)
 
   post Post[]
+
+  @@map("users")
 }
 
 model Post {
@@ -29,4 +31,6 @@ model Post {
   authorId   String?
   create_at  DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("posts")
 }

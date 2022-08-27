@@ -5,6 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from 'src/auth/auth.guard';
 import { Request } from 'express';
 import { HelperService } from 'src/helper/helper.service';
+import { Users } from './entities/user.entities';
 
 @Controller('users')
 export class UsersController {
@@ -26,9 +27,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Get()
-  findAll() {
+  findAll(): Promise<Users[]> {
     return this.usersService.findAll();
   }
 
