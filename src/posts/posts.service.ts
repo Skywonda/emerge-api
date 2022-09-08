@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
@@ -35,7 +35,10 @@ export class PostsService {
   }
 
   async remove(id: Prisma.PostWhereUniqueInput) {
-    console.log(id)
+    const userExist = this.prisma.post.findUnique({ where: id })
+    if (!userExist) {
+      throw new NotFoundException("Post to delete not found!")
+    }
     return this.prisma.post.delete({ where: id });
   }
 }

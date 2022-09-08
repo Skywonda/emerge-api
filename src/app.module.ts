@@ -7,6 +7,8 @@ import { PrismaService } from './prisma/prisma.service';
 import { HelperModule } from './helper/helper.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { AccessControlModule } from 'nest-access-control';
+import { roles } from './auth/roles/roles';
 
 @Module({
   imports: [
@@ -17,7 +19,8 @@ import { JwtModule } from '@nestjs/jwt';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    JwtModule
+    JwtModule,
+    AccessControlModule.forRoles(roles)
   ],
   providers: [HelperService, PrismaService],
 })

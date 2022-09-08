@@ -21,6 +21,8 @@ model User {
 
   post Post[]
 
+  user_type UserType @default(USER)
+
   @@map("users")
 }
 
@@ -33,4 +35,10 @@ model Post {
   updated_at DateTime @updatedAt @db.Timestamptz(6)
 
   @@map("posts")
+}
+
+enum UserType {
+  SUPERADMIN
+  ADMIN
+  USER
 }

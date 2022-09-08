@@ -6,6 +6,7 @@ import { JwtGuard } from 'src/auth/auth.guard';
 import { Request } from 'express';
 import { HelperService } from 'src/helper/helper.service';
 import { Users } from './entities/user.entities';
+import { AdminGuard, Authorize } from 'src/auth/strategy/permission.guard';
 
 @Controller('users')
 export class UsersController {
@@ -27,7 +28,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  // @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, AdminGuard)
   @Get()
   findAll(): Promise<Users[]> {
     return this.usersService.findAll();
@@ -39,7 +40,7 @@ export class UsersController {
     return this.usersService.findOne({ id });
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, AdminGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update({ id }, updateUserDto);

@@ -21,7 +21,7 @@ export class HelperService {
             userId
         }
         const option: JwtSignOptions = {
-            secret: this.config.getOrThrow("ACCESS_TOKEN_SECRET")
+            secret: this.config.getOrThrow("ACCESS_TOKEN_SECRET"),
         }
         return this.jwtService.sign(payload, option)
     }
